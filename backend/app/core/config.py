@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     app_name: str = "AI-First CRM HCP Module"
     environment: str = "development"
     database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/ai_first_crm"
+    auto_create_tables: bool = True
     llm_provider: str = "groq"
     groq_api_key: str | None = None
     groq_model: str = "gemma2-9b-it"

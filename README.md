@@ -27,6 +27,12 @@ A full-stack Healthcare Professional (HCP) CRM module for life science field rep
   - `extract_action_items_tool`
   - `recommend_next_best_action_tool`
 - FastAPI endpoints for CRUD operations and individual AI tool demos.
+- Production-minded engineering layer:
+  - Isolated backend API tests with pytest.
+  - GitHub Actions CI for backend tests and frontend builds.
+  - Dockerfiles and Docker Compose for reproducible full-stack runs.
+  - Alembic migration scaffold for schema evolution.
+  - Health/readiness metadata and frontend API error handling.
 
 ## Project Structure
 
@@ -112,6 +118,49 @@ The backend runs at `http://localhost:8000`.
 ```bash
 python seed_demo_data.py
 ```
+
+## Quality Gates
+
+Run backend tests:
+
+```bash
+cd backend
+python -m pytest
+```
+
+Run frontend production build:
+
+```bash
+cd frontend
+npm run build
+```
+
+Run database migrations against a fresh or production database:
+
+```bash
+cd backend
+python -m alembic upgrade head
+```
+
+If you already have a local SQLite database created by the development server, stamp it once instead of recreating tables:
+
+```bash
+python -m alembic stamp head
+```
+
+## Docker
+
+Build and run the full stack:
+
+```bash
+docker compose up --build
+```
+
+- Frontend: `http://localhost:8080`
+- Backend: `http://localhost:8000`
+- API docs: `http://localhost:8000/docs`
+
+The Docker setup points Ollama calls to `http://host.docker.internal:11434`, so a local `llama3.2` model can be reused from containers.
 
 ## Frontend Setup
 

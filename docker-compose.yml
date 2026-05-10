@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      APP_NAME: AI-First CRM HCP Module
+      ENVIRONMENT: docker
+      DATABASE_URL: sqlite:////data/crm_dev.db
+      AUTO_CREATE_TABLES: "true"
+      LLM_PROVIDER: ollama
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: llama3.2
+      CORS_ORIGINS: http://localhost:5173,http://localhost:8080
+    volumes:
+      - backend-data:/data
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+
+volumes:
+  backend-data:

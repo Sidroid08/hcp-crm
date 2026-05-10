@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -9,10 +11,19 @@ from app.models import interaction  # noqa: F401
 
 settings = get_settings()
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if settings.auto_create_tables:
+        Base.metadata.create_all(bind=engine)
+    yield
+
+
 app = FastAPI(
     title=settings.app_name,
     description="AI-first CRM module for logging Healthcare Professional interactions.",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -22,11 +33,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.on_event("startup")
-def on_startup() -> None:
-    Base.metadata.create_all(bind=engine)
 
 
 @app.get("/", tags=["System"])
