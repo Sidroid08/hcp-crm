@@ -1,5 +1,13 @@
 # AI-First HCP CRM Module
 
+## Copyright and usage notice
+
+Copyright (c) 2026 Siddhant Jadhav. All rights reserved.
+
+This repository is available for portfolio, review, and educational evaluation purposes only. You may view the code, but you may not copy, modify, distribute, or use it commercially without written permission from the author.
+
+---
+
 A full-stack CRM module for logging Healthcare Professional (HCP) interactions. The project gives field representatives two ways to capture interaction data: a structured form for standard entries and an AI-assisted chat logger for conversational logging.
 
 The application is designed as an assignment/demo-ready full-stack system with a React frontend, FastAPI backend, database-backed interaction records, LangGraph-powered AI workflows, Docker support, and CI checks.
